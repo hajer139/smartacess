@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "59094408586",
+    "project_id": "smartacess-bce65",
+    "storage_bucket": "smartacess-bce65.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:59094408586:android:f6a05b16cdc0ede6a27c73",
+        "android_client_info": {
+          "package_name": "com.example.tester_smart"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB1M2qn0r5nI8ViDuqj2uLglSsyp32Hf0I"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

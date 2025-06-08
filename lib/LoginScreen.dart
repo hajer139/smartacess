@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tester_smart/AutoriseDashboardScreen.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import 'AdminDashboardScreen.dart';
 import 'AgentDashboardScreen.dart';
+import 'AutoriseDashboardScreen.dart';
 
 class LoginScreen extends StatefulWidget {
   @override
@@ -43,6 +45,8 @@ class _LoginScreenState extends State<LoginScreen> {
             context,
             MaterialPageRoute(builder: (context) => AgentDashboardScreen()),
           );
+        } else {
+          _showSnackBar("Rôle inconnu");
         }
       } else {
         _showSnackBar('Utilisateur non trouvé');
@@ -60,87 +64,127 @@ class _LoginScreenState extends State<LoginScreen> {
     ).showSnackBar(SnackBar(content: Text(message)));
   }
 
+  InputDecoration _inputDecoration(String hint, IconData icon) {
+    return InputDecoration(
+      prefixIcon: Icon(icon, color: Colors.blueAccent),
+      hintText: hint,
+      filled: true,
+      fillColor: Colors.white,
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide.none,
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
-      body: SafeArea(
-        child: Center(
-          child: SingleChildScrollView(
-            padding: const EdgeInsets.all(24),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  'SMART ACCESS',
-                  style: TextStyle(
-                    fontSize: 28,
-                    fontWeight: FontWeight.bold,
-                    color: Colors.blue[800],
-                    letterSpacing: 1.5,
-                  ),
-                ),
-                const SizedBox(height: 32),
-                Icon(Icons.lock_outline, size: 80, color: Colors.blueAccent),
-                const SizedBox(height: 16),
-                Text(
-                  'Connexion à votre compte',
-                  style: TextStyle(fontSize: 18, color: Colors.grey[700]),
-                ),
-                const SizedBox(height: 32),
-                TextField(
-                  controller: emailController,
-                  decoration: InputDecoration(
-                    labelText: 'Email',
-                    prefixIcon: Icon(Icons.email, color: Colors.blue),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                TextField(
-                  controller: passwordController,
-                  obscureText: true,
-                  decoration: InputDecoration(
-                    labelText: 'Mot de passe',
-                    prefixIcon: Icon(Icons.lock, color: Colors.blue),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    focusedBorder: OutlineInputBorder(
-                      borderSide: BorderSide(color: Colors.blue),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 24),
-                SizedBox(
-                  width: double.infinity,
-                  height: 50,
-                  child: ElevatedButton(
-                    onPressed: _login,
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.blue[800],
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+      body: Stack(
+        children: [
+          // ✅ Image de fond
+          Image.asset(
+            'assets/images/smartlogin.png',
+            width: double.infinity,
+            height: double.infinity,
+            fit: BoxFit.fill,
+          ),
+          // ✅ voile sombre
+          Container(color: Colors.black.withOpacity(0.2)),
+
+          // ✅ contenu remonté
+          Column(
+            children: [
+              const SizedBox(height: 350), // ajuste la hauteur ici
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Text(
+                      'Connexion à votre compte',
+                      style: GoogleFonts.poppins(
+                        fontSize: 16,
+                        color: Colors.white,
                       ),
                     ),
-                    child:
-                        isLoading
-                            ? CircularProgressIndicator(color: Colors.white)
-                            : Text(
-                              'Se connecter',
-                              style: TextStyle(fontSize: 16),
+                    const SizedBox(height: 20),
+                    Container(
+                      padding: const EdgeInsets.all(24),
+                      decoration: BoxDecoration(
+                        color: Colors.white.withOpacity(0.6),
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(color: Colors.white70),
+                      ),
+                      child: Column(
+                        children: [
+                          TextField(
+                            controller: emailController,
+                            decoration: _inputDecoration('Email', Icons.email),
+                          ),
+                          const SizedBox(height: 16),
+                          TextField(
+                            controller: passwordController,
+                            obscureText: true,
+                            decoration: _inputDecoration(
+                              'Mot de passe',
+                              Icons.lock,
                             ),
-                  ),
+                          ),
+                          const SizedBox(height: 20),
+                          Container(
+                            width: double.infinity,
+                            height: 50,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(16),
+                              gradient: const LinearGradient(
+                                colors: [
+                                  Colors.blueAccent,
+                                  Colors.lightBlueAccent,
+                                ],
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.blueAccent.withOpacity(0.3),
+                                  blurRadius: 10,
+                                  offset: const Offset(0, 5),
+                                ),
+                              ],
+                            ),
+                            child: ElevatedButton(
+                              onPressed: _login,
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.transparent,
+                                shadowColor: Colors.transparent,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(16),
+                                ),
+                              ),
+                              child:
+                                  isLoading
+                                      ? const CircularProgressIndicator(
+                                        color: Colors.white,
+                                      )
+                                      : Text(
+                                        'Se connecter',
+                                        style: GoogleFonts.poppins(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.white,
+                                        ),
+                                      ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 40),
+                  ],
                 ),
-              ],
-            ),
+              ),
+            ],
           ),
-        ),
+        ],
       ),
     );
   }

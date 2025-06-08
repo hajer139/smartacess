@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tester_smart/AjouterImageScreen.dart';
 import 'package:tester_smart/AjouterMatriculeScreen.dart';
 import 'package:tester_smart/ReclamationScreen.dart';
 
@@ -11,47 +12,101 @@ class AutoriseDashboardScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text("Espace Personne Autorisée"),
-        backgroundColor: const Color.fromARGB(255, 44, 149, 180),
-      ),
-      body: ListView(
-        padding: EdgeInsets.all(16),
+      backgroundColor: Colors.grey[100],
+      body: Column(
         children: [
-          ListTile(
-            leading: Icon(Icons.badge),
-            title: Text("Ajouter un matricule"),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => AjouterMatriculeScreen(),
+          Container(
+            padding: EdgeInsets.only(top: 50, bottom: 24),
+            width: double.infinity,
+            decoration: BoxDecoration(
+              color: Color.fromARGB(255, 43, 169, 228),
+              borderRadius: BorderRadius.vertical(bottom: Radius.circular(24)),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black26,
+                  blurRadius: 6,
+                  offset: Offset(0, 3),
                 ),
-              );
-            },
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.image),
-            title: Text("Ajouter une image"),
-            onTap: () {
-              // À implémenter
-            },
-          ),
-          Divider(),
-          ListTile(
-            leading: Icon(Icons.report_problem),
-            title: Text("Réclamation"),
-            onTap: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => ReclamationScreen(userEmail: userEmail),
+              ],
+            ),
+            child: Center(
+              child: Text(
+                "Espace Personne Autorisée",
+                style: TextStyle(
+                  fontSize: 22,
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
                 ),
-              );
-            },
+              ),
+            ),
+          ),
+          Expanded(
+            child: ListView(
+              padding: EdgeInsets.all(16),
+              children: [
+                _buildCard(
+                  icon: Icons.badge,
+                  label: "Ajouter un matricule",
+                  context: context,
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => AjouterMatriculeScreen(),
+                        ),
+                      ),
+                ),
+                _buildCard(
+                  icon: Icons.image,
+                  label: "Ajouter une image",
+                  context: context,
+
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => AjouterImageScreen()),
+                    );
+                  },
+                ),
+                _buildCard(
+                  icon: Icons.report_problem,
+                  label: "Réclamation",
+                  context: context,
+                  onTap:
+                      () => Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder:
+                              (_) => ReclamationScreen(userEmail: userEmail),
+                        ),
+                      ),
+                ),
+              ],
+            ),
           ),
         ],
+      ),
+    );
+  }
+
+  Widget _buildCard({
+    required IconData icon,
+    required String label,
+    required BuildContext context,
+    required VoidCallback onTap,
+  }) {
+    return Card(
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+      elevation: 4,
+      margin: EdgeInsets.symmetric(vertical: 10),
+      child: ListTile(
+        contentPadding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        leading: Icon(icon, size: 28, color: Colors.blueAccent),
+        title: Text(
+          label,
+          style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
+        ),
+        onTap: onTap,
       ),
     );
   }

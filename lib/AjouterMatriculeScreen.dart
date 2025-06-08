@@ -14,9 +14,9 @@ class _AjouterMatriculeScreenState extends State<AjouterMatriculeScreen> {
     String matricule = matriculeController.text.trim();
 
     if (matricule.isEmpty) {
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Veuillez entrer un matricule.")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Veuillez entrer un matricule.")),
+      );
       return;
     }
 
@@ -28,9 +28,9 @@ class _AjouterMatriculeScreenState extends State<AjouterMatriculeScreen> {
         'timestamp': FieldValue.serverTimestamp(),
       });
 
-      ScaffoldMessenger.of(
-        context,
-      ).showSnackBar(SnackBar(content: Text("Matricule ajouté avec succès !")));
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Matricule ajouté avec succès !")),
+      );
       matriculeController.clear();
     } catch (e) {
       ScaffoldMessenger.of(
@@ -44,24 +44,50 @@ class _AjouterMatriculeScreenState extends State<AjouterMatriculeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("Ajouter un matricule")),
+      backgroundColor: const Color(0xFFEAF6FB),
+      appBar: AppBar(
+        title: const Text("Ajouter un matricule"),
+        backgroundColor: const Color(0xFF2BA9E4),
+        centerTitle: true,
+        elevation: 3,
+      ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.all(20),
         child: Column(
           children: [
             TextField(
               controller: matriculeController,
               decoration: InputDecoration(
                 labelText: "Matricule",
-                border: OutlineInputBorder(),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                prefixIcon: const Icon(Icons.badge),
               ),
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             isLoading
-                ? CircularProgressIndicator()
-                : ElevatedButton(
-                  onPressed: _ajouterMatricule,
-                  child: Text("Ajouter"),
+                ? const CircularProgressIndicator()
+                : SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton.icon(
+                    onPressed: _ajouterMatricule,
+                    icon: const Icon(Icons.add),
+                    label: const Text("Ajouter"),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF2BA9E4),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      textStyle: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
                 ),
           ],
         ),
